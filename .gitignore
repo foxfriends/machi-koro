@@ -1,4 +1,10 @@
 # please Webpack the project yourself to start your own server
 public_html/machi-koro.js
 server.js
+
+# node_modules can be installed separately
 node_modules
+
+## extra files
+# rulebook is not to be included
+rules.pdf

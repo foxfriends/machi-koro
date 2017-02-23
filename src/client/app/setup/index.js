@@ -5,11 +5,15 @@ import { socketConnect as socket } from 'socket.io-react';
 
 import * as Action from '../../store';
 
+
+
 @socket
 @connect(
   ({ name, game, data: { players } }) => ({ name, game, players }),
   dispatch => ({
-    back: () => dispatch(Action.Setup.Leave())
+    leave: () => dispatch(Action.Setup.Leave()),
+    arrival: (user) => dispatch(Action.Setup.Arrival(user)),
+    departure: (user) => dispatch(Action.Setup.Departure(user)),
   })
 )
 class Setup extends React.Component {
@@ -18,12 +22,24 @@ class Setup extends React.Component {
     name: String,
     game: String,
     players: Array<String>,
-    back: Function,
+    leave: Function,
+    arrival: Function,
+    departure: Function,
   }
 
-  back() {
+  leave() {
     this.props.socket.emit('leave-game', { gameName: this.props.game, userName: this.props.name });
-    this.props.back();
+    this.props.leave();
+  }
+
+  componentWillMount() {
+    this.props.socket.on('join-game', this.props.arrival);
+    this.props.socket.on('leave-game', this.props.departure);
+  }
+
+  componentWillUnmount() {
+    this.props.socket.off('join-game', this.props.arrival);
+    this.props.socket.off('leave-game', this.props.departure);
   }
 
   render() {
@@ -31,8 +47,8 @@ class Setup extends React.Component {
       <div>
         <p>Game: {this.props.game}</p>
         <p>Me: {this.props.name}</p>
-        <p>Players: {this.props.players}</p>
-        <button onClick={this.back.bind(this)}>Back</button>
+        <p>Players: {this.props.players.join(', ')}</p>
+        <button onClick={this.leave.bind(this)}>Back</button>
       </div>
     );
   }

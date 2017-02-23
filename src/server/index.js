@@ -13,14 +13,7 @@ app.use('/', express.static('public_html'));
 
 const io = socket(server);
 
-const connections = new WeakMap();
-
 io.on('connection', (socket) => {
-  // do the game?!?!
-  connections.set(socket, {
-    gameName: '',
-    userName: '',
-  });
   console.log("New connection");
   socket.on('join-game', ({ gameName, userName }, respond) => {
     // TODO: join a game
@@ -28,11 +21,15 @@ io.on('connection', (socket) => {
       respond(null);
     } else {
       respond(store.getState().games[gameName]);
+      socket.join(gameName);
+      socket.to(gameName).emit('join-game', { userName });
     }
   });
 
   socket.on('leave-game', ({ gameName, userName }) => {
     store.dispatch(Action.Setup.Leave({ gameName, userName }));
+    socket.to(gameName).emit('leave-game', { userName });
+    socket.leave(gameName);
   });
 
   socket.on('disconnect', () => {

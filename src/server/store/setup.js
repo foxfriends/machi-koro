@@ -2,14 +2,33 @@
 
 function Game(host) {
   return {
-    players: [host]
+    turn: null,
+    players: [host],
+    // prefill these so they don't have to be dealt with later
+    money: [3, 3, 3, 3],
+    cards: [
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+    goals: [
+      [false, false, false, false],
+      [false, false, false, false],
+      [false, false, false, false],
+      [false, false, false, false],
+    ]
   };
 }
 
 export function Join({gameName, userName}) {
   return {
     type: (state, action) => {
-      if(state.games[gameName] && state.games[gameName].players.length === 4) { return state; }
+      if(state.games[gameName]) {
+        if(state.games[gameName].turn !== null || state.games[gameName].players.length === 4 || state.games[gameName].players.includes(userName)) {
+          return state;
+        }
+      }
       return {
         ...state,
         games: {
