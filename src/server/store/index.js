@@ -13,8 +13,9 @@ function reducers(state = initial, action) {
 }
 
 import * as Setup from './setup';
+import * as Game from './game';
 
-export { Setup };
+export { Setup, Game };
 
 const store = createStore(reducers);
 export default {

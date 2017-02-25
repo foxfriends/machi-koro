@@ -40,15 +40,29 @@ export function Arrival({ userName: name }) {
   };
 }
 
-export function Departure({ userName: name }) {
+export function Ready({ id }) {
   return {
-    type: (state, { name }) => ({
+    type: (state, { id }) => ({
       ...state,
       data: {
         ...state.data,
-        players: state.data.players.filter(n => n !== name)
+        ready: state.data.ready.map((ready, i) => ready || i === id)
       }
     }),
-    name
+    id
+  }
+}
+
+export function Departure({ id }) {
+  return {
+    type: (state, { id }) => ({
+      ...state,
+      data: {
+        ...state.data,
+        players: state.data.players.filter((_, i) => i !== id),
+        ready: [...state.data.ready.filter((_, i) => i !== id), false]
+      }
+    }),
+    id
   };
 }
