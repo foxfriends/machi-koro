@@ -9,7 +9,7 @@ export function Join({data, game, name}) {
       phase: Phase.Setup,
       data,
       name,
-      game
+      game,
     }),
     data, game, name
   };
@@ -22,7 +22,7 @@ export function Leave() {
       phase: Phase.Menu,
       data: null,
       game: '',
-      name: ''
+      name: '',
     })
   };
 }
@@ -33,7 +33,7 @@ export function Arrival({ userName: name }) {
       ...state,
       data: {
         ...state.data,
-        players: [...state.data.players, name]
+        players: [...state.data.players, name],
       }
     }),
     name
@@ -46,7 +46,7 @@ export function Ready({ id }) {
       ...state,
       data: {
         ...state.data,
-        ready: state.data.ready.map((ready, i) => ready || i === id)
+        ready: state.data.ready.map((ready, i) => ready || i === id),
       }
     }),
     id
@@ -60,9 +60,18 @@ export function Departure({ id }) {
       data: {
         ...state.data,
         players: state.data.players.filter((_, i) => i !== id),
-        ready: [...state.data.ready.filter((_, i) => i !== id), false]
+        ready: [...state.data.ready.filter((_, i) => i !== id), false],
       }
     }),
     id
   };
+}
+
+export function Start() {
+  return {
+    type: (state) => ({
+      ...state,
+      phase: Phase.Game,
+    })
+  }
 }

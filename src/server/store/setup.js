@@ -29,6 +29,7 @@ class Game {
     [false, false, false, false],
     [false, false, false, false],
   ];
+  dice = null;
 
   constructor(host) {
     this.players = [host];
@@ -59,44 +60,63 @@ export function Join({ gameName, userName }) {
 
 export function Leave({ game, id }) {
   return {
+    type: (state, { game, id }) => {
+      if(state.games[game].turn !== null) { return state; }
+      return {
+        ...state,
+        games: {
+          ...state.games,
+          [game]: {
+            ...state.games[game],
+            players: state.games[game].players.filter((_, i) => i !== id),
+            ready: [...state.games[game].ready.filter((_, i) => i !== id), false]
+          }
+        }
+      }
+    },
+    game, id
+  };
+}
+
+export function Ready({ game, id }) {
+  return {
     type: (state, { game, id }) => ({
       ...state,
       games: {
         ...state.games,
         [game]: {
           ...state.games[game],
-          players: state.games[game].players.filter((_, i) => i !== id),
-          ready: [...state.games[game].ready.filter((_, i) => i !== id), false]
+          ready: state.games[game].ready.map((ready, i) => ready || i === id)
         }
       }
     }),
     game, id
-  };
+  }
 }
 
-export function Ready({ game, user }) {
+export function Close({ game }) {
   return {
-    type: (state, { game, user }) => ({
+    type: (state, { game }) => {
+      const games = {...state.games};
+      delete games[game];
+      return { ...state, games };
+    },
+    game
+  }
+}
+
+export function Start({ game }) {
+  return {
+    type: (state, { game }) => ({
       ...state,
       games: {
         ...state.games,
         [game]: {
           ...state.games[game],
-          ready: state.games[game].ready.map((ready, i) => ready || i === user)
+          turn: Math.floor(Math.random() * state.games[game].players.length)
         }
       }
     }),
-    game, user
-  }
-}
-
-export function Close({ gameName }) {
-  return {
-    type: (state, { gameName }) => {
-      const games = {...state.games};
-      delete games[gameName];
-      return { ...state, games };
-    },
-    gameName
+    game
   }
 }

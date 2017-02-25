@@ -5,15 +5,15 @@ import { socketConnect as socket } from 'socket.io-react';
 
 import * as Action from '../../store';
 
-
-
 @socket
 @connect(
-  ({ name, game, data: { players } }) => ({ name, game, players }),
+  ({ name, game, data: { players, ready } }) => ({ name, game, players, ready }),
   dispatch => ({
     leave: () => dispatch(Action.Setup.Leave()),
     arrival: (user) => dispatch(Action.Setup.Arrival(user)),
     departure: (user) => dispatch(Action.Setup.Departure(user)),
+    readyToStart: (user) => dispatch(Action.Setup.Ready(user)),
+    start: (user) => dispatch(Action.Setup.Start(user)),
   })
 )
 class Setup extends React.Component {
@@ -22,9 +22,12 @@ class Setup extends React.Component {
     name: String,
     game: String,
     players: Array<String>,
+    ready: Array<Boolean>,
     leave: Function,
     arrival: Function,
     departure: Function,
+    readyToStart: Function,
+    start: Function,
   }
 
   leave() {
@@ -35,11 +38,19 @@ class Setup extends React.Component {
   componentWillMount() {
     this.props.socket.on('join-game', this.props.arrival);
     this.props.socket.on('leave-game', this.props.departure);
+    this.props.socket.on('ready', this.props.readyToStart);
+    this.props.socket.on('start', this.props.start);
   }
 
   componentWillUnmount() {
     this.props.socket.off('join-game', this.props.arrival);
     this.props.socket.off('leave-game', this.props.departure);
+    this.props.socket.off('ready', this.props.readyToStart);
+    this.props.socket.off('start', this.props.start);
+  }
+
+  ready() {
+    this.props.socket.emit('ready-to-start');
   }
 
   render() {
@@ -48,6 +59,8 @@ class Setup extends React.Component {
         <p>Game: {this.props.game}</p>
         <p>Me: {this.props.name}</p>
         <p>Players: {this.props.players.join(', ')}</p>
+        <p>Ready: {this.props.ready.join(', ')}</p>
+        <button onClick={this.ready.bind(this)}>Ready</button>
         <button onClick={this.leave.bind(this)}>Back</button>
       </div>
     );

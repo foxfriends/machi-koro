@@ -22,24 +22,36 @@ export function Join({ gameName, userName }) {
   };
 }
 
-export function Leave({ gameName, userName }) {
+export function Leave({ game, id }) {
   return {
-    type: (state, { gameName, userName }) => {
-      const id = state.games[gameName].players.indexOf(userName);
-      if(id === -1) { return state; }
-      return {
-        ...state,
-        games: {
-          ...state.games,
-          [gameName]: {
-            ...state.games[gameName],
-            ready: state.games[gameName].ready.map((p, i) => i !== id && p)
-          }
+    type: (state, { game, id }) => ({
+      ...state,
+      games: {
+        ...state.games,
+        [game]: {
+          ...state.games[game],
+          ready: state.games[game].ready.map((ready, i) => i !== id && ready)
         }
       }
-    },
-    gameName, userName
+    }),
+    game, id
   };
+}
+
+export function Roll({ game, dice }) {
+  return {
+    type: (state, { game, dice }) => ({
+      ...state,
+      games: {
+        ...state.games,
+        [game]: {
+          ...state.games[game],
+          dice
+        }
+      }
+    }),
+    game, dice
+  }
 }
 
 export function Purchase({ game, id, card }) {
@@ -230,9 +242,10 @@ export function BusinessCenter({ game, you, them, yours, theirs }) {
   }
 }
 
-export function EndTurn({ game, id }) {
+export function EndTurn({ game }) {
   return {
-    type: (state, { game, id: turn }) => {
+    type: (state, { game }) => {
+      let turn = state.games[game].turn;
       while(turn >= state.games[game].players.length) {
         turn = state.games[game].turnOrder[turn];
       }
