@@ -18,7 +18,7 @@
   ],
   "author": "Cameron Eldridge",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-plugin-transform-async-to-generator": "^6.22.0",
@@ -34,6 +34,7 @@
     "img-loader": "^1.3.1",
     "node-sass": "^4.5.0",
     "postcss-loader": "^1.3.1",
+    "promise-defer": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
@@ -51,32 +52,5 @@
   "bugs": {
     "url": "https://github.com/OinkIguana/machi-koro/issues"
   },
-  "homepage": "https://github.com/OinkIguana/machi-koro#readme",
-  "dependencies": {
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.3.2",
-    "babel-plugin-transform-async-to-generator": "^6.22.0",
-    "babel-plugin-transform-class-properties": "^6.23.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-exponentiation-operator": "^6.22.0",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-react-jsx": "^6.23.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "css-loader": "^0.26.1",
-    "express": "^4.14.1",
-    "file-loader": "^0.10.0",
-    "img-loader": "^1.3.1",
-    "node-sass": "^4.5.0",
-    "postcss-loader": "^1.3.1",
-    "react-redux": "^5.0.2",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "redux": "^3.6.0",
-    "sass-loader": "^6.0.2",
-    "socket.io": "^1.7.3",
-    "socket.io-client": "^1.7.3",
-    "socket.io-react": "^1.1.2",
-    "style-loader": "^0.13.1",
-    "webpack": "^2.2.1"
-  }
+  "homepage": "https://github.com/OinkIguana/machi-koro#readme"
 }

@@ -4,6 +4,8 @@ server.js
 
 # node_modules can be installed separately
 node_modules
+# no need for errors
+npm-debug.log*
 
 ## extra files
 # rulebook is not to be included

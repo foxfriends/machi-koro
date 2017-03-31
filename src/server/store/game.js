@@ -55,9 +55,9 @@ export function Roll({ game, dice }) {
 }
 
 export function Purchase({ game, id, card }) {
+  card = Card[card];
   return {
     type: (state, { game, id, card }) => {
-      card = Card[card];
       if(state.games[game].money[id] < card.cost) { return state; }
       if(state.games[game].cardsLeft[card.id] === 0) { return state; }
       if(card.color === Color.Purple && state.games[game].cards[id][card.id]) { return state; }
@@ -67,6 +67,7 @@ export function Purchase({ game, id, card }) {
           ...state.games,
           [game]: {
             ...state.games[game],
+            cardsLeft: state.games[game].cardsLeft.map((qty, i) => i !== card.id ? qty : qty - 1),
             cards: state.games[game].cards.map((list, i) => i !== id
               ? [...list]
               : list.map((count, i) => i !== card.id ? count : count + 1)
@@ -81,9 +82,9 @@ export function Purchase({ game, id, card }) {
 }
 
 export function Construct({ game, id, landmark }) {
+  landmark = Landmark[landmark];
   return {
     type: (state, { game, id, landmark }) => {
-      landmark = Landmark[landmark];
       if(state.games[game].money[id] < landmark.cost) { return state; }
       if(state.games[game].goals[id][landmark.id]) { return state; }
       return {
@@ -92,9 +93,10 @@ export function Construct({ game, id, landmark }) {
           ...state.games,
           [game]: {
             ...state.games[game],
+            money: state.games[game].money.map((qty, i) => i !== id ? qty : qty - landmark.cost),
             goals: state.games[game].goals.map((list, i) => i !== id
               ? [...list]
-              : list.map((built, i) => i !== landmark.id === i || built))
+              : list.map((built, i) => landmark.id === i || built))
           }
         }
       }
@@ -114,7 +116,7 @@ export function Activate({ game, id, card }) {
             [game]: {
               ...state.games[game],
               money: state.games[game].money.map((qty, i) =>
-                qty + state.games[game].cards[card.id] * (
+                qty + state.games[game].cards[i][card.id] * (
                   card.cards = state.games[game].cards[i],
                   card.goals = state.games[game].goals[i],
                   card.value
@@ -135,7 +137,7 @@ export function Activate({ game, id, card }) {
               ...state.games[game],
               money: state.games[game].money.map((qty, i) => i !== id
                 ? qty
-                : qty + state.games[game].cards[card.id] * (
+                : qty + state.games[game].cards[i][card.id] * (
                   card.cards = state.games[game].cards[i],
                   card.goals = state.games[game].goals[i],
                   card.value
@@ -172,7 +174,7 @@ export function Activate({ game, id, card }) {
       };
     case Color.Purple:
       // purple are too special, so do it manually from the client side
-      return { type: (state) => state };
+      return { type: state => state, game, id, card };
   }
 }
 
@@ -222,6 +224,7 @@ export function BusinessCenter({ game, you, them, yours, theirs }) {
     type: (state, { game, you, them, yours, theirs }) => {
       if(theirs.color === Color.Purple || yours.color === Color.Purple) { return state; }
       if(state.games[game].cards[you][yours.id] === 0 || state.games[game].cards[them][theirs.id] === 0) { return state; }
+      if(yours.id === theirs.id) { return {...state}; } // this is a valid action, but does not change anything
       return {
         ...state,
         games: {
@@ -245,7 +248,7 @@ export function BusinessCenter({ game, you, them, yours, theirs }) {
 export function EndTurn({ game }) {
   return {
     type: (state, { game }) => {
-      let turn = state.games[game].turn;
+      let turn = state.games[game].turnOrder[state.games[game].turn];
       while(turn >= state.games[game].players.length) {
         turn = state.games[game].turnOrder[turn];
       }
@@ -255,11 +258,12 @@ export function EndTurn({ game }) {
           ...state.games,
           [game]: {
             ...state.games[game],
+            dice: null,
             turn
           }
         }
       };
     },
-    game, id
+    game
   };
 }

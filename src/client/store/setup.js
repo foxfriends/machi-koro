@@ -4,8 +4,9 @@ import { Phase } from './';
 
 export function Join({data, game, name}) {
   return {
-    type: (state, { data, game }) => ({
+    type: (state, { data, game, name }) => ({
       ...state,
+      id: data.players.indexOf(name),
       phase: Phase.Setup,
       data,
       name,
@@ -67,11 +68,15 @@ export function Departure({ id }) {
   };
 }
 
-export function Start() {
+export function Start({ turn }) {
   return {
     type: (state) => ({
       ...state,
       phase: Phase.Game,
+      data: {
+        ...state.data,
+        turn
+      },
     })
   }
 }

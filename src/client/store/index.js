@@ -10,8 +10,10 @@ export const Phase = {
 
 const initial = {
   phase: Phase.Menu,
+  id: -1,
   name: '',
-  game: null,
+  game: '',
+  data: null
 };
 
 function reducer(state = initial, action) {
@@ -22,6 +24,7 @@ function reducer(state = initial, action) {
 }
 
 import * as Setup from './setup';
-export { Setup };
+import * as Game from './game';
+export { Setup, Game };
 
 export default createStore(reducer);

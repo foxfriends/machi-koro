@@ -52,12 +52,12 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text" name="gameName" onChange={this.handleChange.bind(this)} placeholder="Game name"/>
-        <input type="text" name="userName" onChange={this.handleChange.bind(this)} placeholder="Your name"/>
+      <form onSubmit={(e) => this.handleSubmit(e)}>
+        <input type="text" name="gameName" onChange={(e) => this.handleChange(e)} placeholder="Game name"/>
+        <input type="text" name="userName" onChange={(e) => this.handleChange(e)} placeholder="Your name"/>
         <input type="submit" value="Submit" />
         { _if (this.state.loading) (<LoadingPane />) }
-        { _if (this.state.errorMsg !== '') (<ErrorMessage message={this.state.errorMsg} close={this.clearError.bind(this)} />)}
+        { _if (this.state.errorMsg !== '') (<ErrorMessage message={this.state.errorMsg} close={() => this.clearError()} />)}
       </form>
     );
   }

@@ -10,26 +10,29 @@ function shuffle(a) {
 }
 
 class Game {
-  turn = null;
-  turnOrder = shuffle([ 0, 1, 2, 3 ]).map((_, i, a) => [a[i], a[(i + 1) % a.length]]).reduce((m, p) => ({...m, [p[0]]: p[1]}), {});
-  players = [];
-  ready = [false, false, false, false];
+  turn : Number = null;
+  turnOrder : { [String] : Number } =
+    shuffle([ 0, 1, 2, 3 ])
+      .map((_, i, a) => [a[i], a[(i + 1) % a.length]])
+      .reduce((m, [k,v]) => ({...m, [k]: v}), {});
+  players : Array<String> = [];
+  ready : Array<Boolean> = [false, false, false, false];
   // prefill these so they don't have to be dealt with later
-  money = [3, 3, 3, 3];
-  cardsLeft = [6, 6, 6, 6, 6, 6, 4, 4, 4, 6, 6, 6, 6, 6, 6];
-  cards = [
+  money : Array<Number> = [3, 3, 3, 3];
+  cardsLeft : Array<Number> = [6, 6, 6, 6, 6, 6, 4, 4, 4, 6, 6, 6, 6, 6, 6];
+  cards : Array<Array<Number>> = [
     [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
-  goals = [
+  goals : Array<Array<Boolean>> = [
     [false, false, false, false],
     [false, false, false, false],
     [false, false, false, false],
     [false, false, false, false],
   ];
-  dice = null;
+  dice : Array<Number> = null;
 
   constructor(host) {
     this.players = [host];

@@ -13,7 +13,7 @@ import * as Action from '../../store';
     arrival: (user) => dispatch(Action.Setup.Arrival(user)),
     departure: (user) => dispatch(Action.Setup.Departure(user)),
     readyToStart: (user) => dispatch(Action.Setup.Ready(user)),
-    start: (user) => dispatch(Action.Setup.Start(user)),
+    start: (turn) => dispatch(Action.Setup.Start(turn)),
   })
 )
 class Setup extends React.Component {
@@ -60,8 +60,8 @@ class Setup extends React.Component {
         <p>Me: {this.props.name}</p>
         <p>Players: {this.props.players.join(', ')}</p>
         <p>Ready: {this.props.ready.join(', ')}</p>
-        <button onClick={this.ready.bind(this)}>Ready</button>
-        <button onClick={this.leave.bind(this)}>Back</button>
+        <button onClick={() => this.ready()}>Ready</button>
+        <button onClick={() => this.leave()}>Back</button>
       </div>
     );
   }
