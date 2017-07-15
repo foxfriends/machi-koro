@@ -7,6 +7,7 @@ import * as Action from '../../store';
 import { _if } from '../../helper';
 import LoadingPane from '../../components/loading-pane';
 import ErrorMessage from '../../components/error-message';
+import './index.scss';
 
 @socket
 @connect(
@@ -31,6 +32,10 @@ class Menu extends React.Component {
     this.setState({ [event.target.getAttribute('name')] : event.target.value });
   }
 
+  componentDidMount() {
+    setTimeout(() => this.setState({ backgroundsVisible: 'main-menu__image--visible' }));
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const { gameName, userName } = this.state;
@@ -52,13 +57,18 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <form onSubmit={(e) => this.handleSubmit(e)}>
-        <input type="text" name="gameName" onChange={(e) => this.handleChange(e)} placeholder="Game name"/>
-        <input type="text" name="userName" onChange={(e) => this.handleChange(e)} placeholder="Your name"/>
-        <input type="submit" value="Submit" />
-        { _if (this.state.loading) (<LoadingPane />) }
-        { _if (this.state.errorMsg !== '') (<ErrorMessage message={this.state.errorMsg} close={() => this.clearError()} />)}
-      </form>
+      <div className="main-menu">
+        <div className={`main-menu__image--back main-menu__image ${this.state.backgroundsVisible || ''}`} />
+        <div className={`main-menu__image--middle main-menu__image ${this.state.backgroundsVisible || ''}`} />
+        <div className={`main-menu__image--front main-menu__image ${this.state.backgroundsVisible || ''}`} />
+        <form className="main-menu__form" onSubmit={(e) => this.handleSubmit(e)}>
+          <input className="main-menu__input" type="text" name="gameName" onChange={(e) => this.handleChange(e)} placeholder="Game name"/>
+          <input className="main-menu__input" type="text" name="userName" onChange={(e) => this.handleChange(e)} placeholder="Your name"/>
+          <input className="main-menu__button" type="submit" value="Submit" />
+          { _if (this.state.loading) (<LoadingPane />) }
+          { _if (this.state.errorMsg !== '') (<ErrorMessage message={this.state.errorMsg} close={() => this.clearError()} />)}
+        </form>
+      </div>
     );
   }
 }

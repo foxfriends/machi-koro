@@ -3,6 +3,7 @@ import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { SocketProvider } from 'socket.io-react';
 import { render } from 'react-dom';
+import './index.scss';
 
 import store from './store';
 import socket from './socket';
