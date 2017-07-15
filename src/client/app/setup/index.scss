@@ -1,0 +1,50 @@
+@import '../../base';
+.setup {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  &__players {
+    display: flex;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
+  &__player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-basis: calc(50% - 32px);
+    height: calc(50% - 32px);
+    margin: 16px;
+    line-height: 80px;
+    background-color: transparentize(white, 0.8);
+    &--me {
+      @extend .setup__player;
+    }
+  }
+  &__name {
+    font-size: 24px;
+  }
+  &__ready {
+    font-size: 48px;
+    font-family: 'Icons';
+  }
+  &__actions {
+    display: flex;
+    flex-basis: 50px;
+  }
+  &__action {
+    @extend %button;
+    flex-basis: 0;
+    flex-grow: 1;
+    &--small {
+      @extend .setup__action;
+      flex-grow: 0.5;
+    }
+    &--large {
+      @extend .setup__action;
+      flex-grow: 2;
+    }
+  }
+}

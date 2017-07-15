@@ -1,12 +1,14 @@
 'use strict';
 import React from 'react';
-import { connect } from 'react-redux';
-import { socketConnect as socket } from 'socket.io-react';
+import { connect as reduxConnect } from 'react-redux';
+import { socketConnect } from 'socket.io-react';
 
 import * as Action from '../../store';
+import { _if, pair } from '../../helper';
+import './index.scss';
 
-@socket
-@connect(
+@socketConnect
+@reduxConnect(
   ({ name, game, data: { players, ready } }) => ({ name, game, players, ready }),
   dispatch => ({
     leave: () => dispatch(Action.Setup.Leave()),
@@ -17,7 +19,7 @@ import * as Action from '../../store';
   })
 )
 class Setup extends React.Component {
-  props : {
+  props: {
     socket: SocketIO,
     name: String,
     game: String,
@@ -54,14 +56,29 @@ class Setup extends React.Component {
   }
 
   render() {
+    const players = pair(this.props.players, this.props.ready);
+    const ready = players.find(_ => _[0] === this.props.name)[1];
     return (
-      <div>
-        <p>Game: {this.props.game}</p>
-        <p>Me: {this.props.name}</p>
-        <p>Players: {this.props.players.join(', ')}</p>
-        <p>Ready: {this.props.ready.join(', ')}</p>
-        <button onClick={() => this.ready()}>Ready</button>
-        <button onClick={() => this.leave()}>Back</button>
+      <div className="setup">
+        <div className="setup__players">
+          { players.map(([name, ready]) =>
+              <div className={[`setup__player${name === this.props.name ? '--me' : ''}`]} key={name}>
+                <div className="setup__name">{ name }</div>
+                <div className="setup__ready">
+                  { ready ? 'check' : 'close' }
+                </div>
+              </div>
+            )
+          }
+        </div>
+        <div className="setup__actions">
+          <button className="setup__action--small" onClick={() => this.leave()}>Back</button>
+          <button className="setup__action--large" onClick={() => this.ready()} disabled={ready}>
+            { ready
+              ? 'The game will start when all players are ready'
+              : 'Ready!' }
+          </button>
+        </div>
       </div>
     );
   }

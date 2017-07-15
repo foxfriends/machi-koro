@@ -1,0 +1,22 @@
+%input {
+  box-sizing: border-box;
+  border: none;
+  padding: 4px;
+  height: 40px;
+  background: none;
+  font-size: 17px;
+  outline: none;
+}
+
+%button {
+  @extend %input;
+  flex-basis: 100%;
+  transition: background-color 0.3s;
+
+  &:not([disabled]) {
+    cursor: pointer;
+    &:hover {
+      background-color: transparentize(black, 0.9);
+    }
+  }
+}

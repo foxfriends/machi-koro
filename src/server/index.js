@@ -41,8 +41,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('leave-game', (respond) => {
-    respond();
+  socket.on('leave-game', () => {
     const _id = id();
     store.dispatch(Action.Setup.Leave({ game, id: _id }));
     if(store.getState().games[game].players.length === 0) {

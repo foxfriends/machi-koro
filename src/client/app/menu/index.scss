@@ -1,3 +1,4 @@
+@import '../../base';
 .main-menu {
   width: 100vw;
   height: 100vh;
@@ -49,13 +50,7 @@
     margin: 8px;
   }
   &__input input, &__button {
-    box-sizing: border-box;
-    border: none;
-    padding: 4px;
-    height: 40px;
-    background: none;
-    font-size: 17px;
-    outline: none;
+    @extend %input;
   }
   &__input {
     position: relative;
@@ -81,13 +76,6 @@
     transform: scaleX(1);
   }
   &__button {
-    flex-basis: 100%;
-    transition: background-color 0.3s;
-    &:not([disabled]) {
-      cursor: pointer;
-      &:hover {
-        background-color: transparentize(black, 0.9);
-      }
-    }
+    @extend %button;
   }
 }
