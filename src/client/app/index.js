@@ -1,15 +1,13 @@
 'use strict';
 
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect as reduxConnect } from 'react-redux';
 import Menu from './menu';
 import Setup from './setup';
 import Game from './game';
 import { Phase } from '../store';
 
-// base controller
-
-@connect(({ phase }) => ({ phase }))
+@reduxConnect(({ phase }) => ({ phase }))
 class MachiKoro extends React.Component {
   render() {
     switch(this.props.phase) {

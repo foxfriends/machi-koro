@@ -16,4 +16,4 @@ render(
     </ReduxProvider>
   </SocketProvider>,
   document.querySelector('#machi-koro')
-)
+);

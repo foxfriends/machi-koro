@@ -2,6 +2,9 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+
   &__image {
     position: absolute;
     display: block;
@@ -11,9 +14,10 @@
     transition-duration: 1.2s;
     transition-timing-function: cubic-bezier(0.09, 0.65, 0.6, 1.35);
     transform: translateY(100%);
-    background-position: bottom center;
+    background-position: center bottom;
     background-size: 100%;
     background-repeat: no-repeat;
+    will-change: transform;
     &--front {
       background-image: url(../../../images/cover-foreground.png);
       z-index: -1;
@@ -30,6 +34,60 @@
     }
     &--visible {
       transform: translateY(0);
+    }
+  }
+  &__form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    padding: 32px;
+    margin: 0 auto;
+    background-color: transparentize(white, 0.1);
+    border-radius: 2px;
+  }
+  &__input, &__button {
+    margin: 8px;
+  }
+  &__input input, &__button {
+    box-sizing: border-box;
+    border: none;
+    padding: 4px;
+    height: 40px;
+    background: none;
+    font-size: 17px;
+    outline: none;
+  }
+  &__input {
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
+    border-bottom: 1px solid transparentize(black, 0.8);
+    color: black;
+    input {
+      width: 100%;
+    }
+  }
+  &__input input + &__input-underline {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    border-bottom: 1px solid black;
+    transform: scaleX(0);
+    will-change: transform;
+    transition: transform 0.2s;
+  }
+  &__input input:focus + &__input-underline {
+    transform: scaleX(1);
+  }
+  &__button {
+    flex-basis: 100%;
+    transition: background-color 0.3s;
+    &:not([disabled]) {
+      cursor: pointer;
+      &:hover {
+        background-color: transparentize(black, 0.9);
+      }
     }
   }
 }
