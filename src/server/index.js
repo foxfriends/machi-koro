@@ -18,15 +18,20 @@ const io = socket(server);
 io.on('connection', (socket) => {
   console.log("New connection");
   let game, user, id = () => store.getState().games[game].players.indexOf(user);
+
   socket.on('join-game', ({ gameName, userName }, respond) => {
     // join new game
     let start = false;
     if(store.getState() === store.nextState(Action.Setup.Join({ gameName, userName }))) {
-      // join existing game
+      if(store.getState().games[gameName].turn === null) {
+        // cannot join a game already being set up
+        return respond(null);
+      }
       if(store.getState() === store.nextState(Action.Game.Join({ gameName, userName }))) {
         // all games full
         return respond(null);
       } else {
+        // join existing game
         start = true;
       }
     }
