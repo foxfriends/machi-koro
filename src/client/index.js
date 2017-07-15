@@ -1,7 +1,6 @@
 'use strict';
 import React from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { SocketProvider } from 'socket.io-react';
 import { render } from 'react-dom';
 
@@ -11,9 +10,9 @@ import MachiKoro from './app';
 
 render(
   <SocketProvider socket={ socket }>
-    <Provider store={ store }>
+    <ReduxProvider store={ store }>
       <MachiKoro />
-    </Provider>
+    </ReduxProvider>
   </SocketProvider>,
   document.querySelector('#machi-koro')
 )
