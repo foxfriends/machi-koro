@@ -44,9 +44,9 @@
     border-radius: 8px;
     @for $i from 1 through 6 {
       &--depth-#{$i} {
-        $shadows: 0 2px 0 0 darken($skyblue, 5), 0 2px 0 1px darken($skyblue, 10);
+        $shadows: 0 2px 0 0 darken(white, 5), 0 2px 0 1px darken(white, 10);
         @for $n from 2 through $i {
-          $shadows: $shadows + ', 0 #{2 * $n}px 0 0 #{darken($skyblue, 5)}, 0 #{2 * $n}px 0 1px #{darken($skyblue, 10)}'
+          $shadows: $shadows + ', 0 #{2 * $n}px 0 0 #{darken(white, 0)}, 0 #{2 * $n}px 0 1px #{darken(white, 10)}'
         }
         box-shadow: #{$shadows};
         transform: translateY(-2px * $i);
