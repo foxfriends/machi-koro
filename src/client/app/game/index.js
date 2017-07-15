@@ -1,7 +1,7 @@
 'use strict';
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { socketConnect as socket } from 'socket.io-react';
+import { connect as reduxConnect } from 'react-redux';
+import { socketConnect } from 'socket.io-react';
 import { _if } from '../../helper';
 
 import Board from './board';
@@ -10,8 +10,8 @@ import Controls from './controls';
 
 import * as Action from '../../store';
 
-@socket
-@connect(
+@socketConnect
+@reduxConnect(
   ({ id: pid, data : { players, turn }}) => ({ players, turn, pid }),
   dispatch => ({
     diceRolled: (dice) => dispatch(Action.Game.Dice(dice)),
@@ -63,7 +63,7 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="game">
         <Board />
         { this.props.players.map((name, i) => <Player name={name} key={`${i}`} index={i} id={`player-${i}`} />) }
         { _if(this.props.turn === this.props.pid) (<Controls />)}

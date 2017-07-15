@@ -1,29 +1,33 @@
 'use strict';
 import * as React from 'react';
-import { socketConnect as socket } from 'socket.io-react';
-import { connect } from 'react-redux';
+import { connect as reduxConnect} from 'react-redux';
 import cards from '../../../cards';
 import * as Action from '../../store';
 
-@connect(
-  ({ data : { cardsLeft : cards, turn, dice } }) => ({ cards, turn, dice })
+import './board.scss';
+
+@reduxConnect(
+  ({ data : { cardsLeft: cards, turn, dice, players } }) => ({ cards, turn, dice, players })
 )
 class Board extends React.Component {
-  props : {
+  props: {
     cards : Array<Number>,
     turn : Number,
     dice: Array<Number>,
+    players: Array<String>,
   };
 
   render() {
     return (
-      <div>
-        <p>Current turn: {this.props.turn}</p>
-        <p>Cards Remaining</p>
-        <ul>
-        { [...cards].map(({name, id}) => <li key={`${id}`}>{name}: {this.props.cards[id]}</li>) }
-        </ul>
-        <p>Dice: {this.props.dice}</p>
+      <div className="board">
+        <p className="board__turn">{this.props.players[this.props.turn]}'s turn</p>
+        <div className="board__dice">Dice: {this.props.dice}</div>
+        <div className="board__cards">
+          { [...cards].map(({name, id}) =>
+            <div className={`board__card-backing board__card-backing--depth-${this.props.cards[id]}`}>
+              <div className={`board__card board__card--${name.toLowerCase().replace(/\W/g, '-')}`} key={`${id}`} />
+            </div>) }
+        </div>
       </div>
     )
   }

@@ -1,5 +1,5 @@
 // TODO: icons font
-
+@import 'variables';
 html, body {
   margin: 0;
   padding: 0;
@@ -7,7 +7,7 @@ html, body {
   font-family: 'Roboto',sans-serif;
 }
 html {
-  background-color: #01addd;
+  background-color: $skyblue;
 }
 body {
   z-index: 0;
