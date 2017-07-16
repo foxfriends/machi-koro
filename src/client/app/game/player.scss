@@ -1,4 +1,7 @@
 @import '../../variables';
+@import '../../base';
+@import '../../mixins';
+
 .player {
   position: absolute;
   width: ($cardSize / 2 + 16px) * 4;

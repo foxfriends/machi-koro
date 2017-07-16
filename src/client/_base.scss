@@ -1,3 +1,4 @@
+@import 'variables';
 %input {
   box-sizing: border-box;
   border: none;
@@ -19,4 +20,16 @@
       background-color: transparentize(black, 0.9);
     }
   }
+}
+
+%card {
+  background-size: cover;
+  width: $cardSize;
+  height: $cardSize / 0.66;
+}
+
+%landmark {
+  background-size: cover;
+  width: $cardSize / 2;
+  height: $cardSize / 0.66 / 2;
 }

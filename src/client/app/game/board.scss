@@ -1,4 +1,7 @@
 @import '../../variables';
+@import '../../base';
+@import '../../mixins';
+
 .board {
   position: absolute;
   top: 0;

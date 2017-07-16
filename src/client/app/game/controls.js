@@ -1,12 +1,13 @@
 'use strict';
 import React from 'react';
-import { socketConnect as socket } from 'socket.io-react';
-import { connect } from 'react-redux';
+import { socketConnect } from 'socket.io-react';
+import { connect as reduxConnect } from 'react-redux';
 import Deferred from 'promise-defer';
 
 import { _if } from '../../helper';
 import Landmark from '../../../landmarks';
 import { Card, Color, Purchase } from '../../../cards';
+import './controls.scss';
 
 const Phase = {
   Start: Symbol(),
@@ -23,8 +24,8 @@ const Phase = {
   AmusementPark: Symbol(),
 };
 
-@socket
-@connect(
+@socketConnect
+@reduxConnect(
   ({ name, data: { turn, goals, money, players, cards } }) => ({ name, goals: goals[turn], money: money[turn], players, cards, turn })
 )
 class Controls extends React.Component {
@@ -120,15 +121,21 @@ class Controls extends React.Component {
   }
 
   render() {
-    return this[this.state.phase]();
+    return (
+      <div className="controls">
+        { this[this.state.phase]() }
+      </div>
+    );
   }
 
   [Phase.Start]() {
     return (
-      <div>
-        <button onClick={() => this.startTurn()}>Start Turn!</button>
+      <div className="start-phase">
+        <div className="start-phase__container">
+          <button className="start-phase__button" onClick={() => this.startTurn()}>Start Turn!</button>
+        </div>
       </div>
-    )
+    );
   }
 
   [Phase.Dice]() {
@@ -139,7 +146,7 @@ class Controls extends React.Component {
           <button onClick={() => this.state.resolve(2)}>Roll 2 dice</button>
         )}
       </div>
-    )
+    );
   }
 
   [Phase.RadioTower]() {
@@ -152,7 +159,7 @@ class Controls extends React.Component {
           <button onClick={() => this.state.resolve(2)}>Roll 2 dice</button>
         )}
       </div>
-    )
+    );
   }
 
   [Phase.Cards]() {
@@ -167,7 +174,7 @@ class Controls extends React.Component {
           player !== this.props.name ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{player}</button> : null
         )
       </div>
-    )
+    );
   }
 
   [Phase.BusinessCenter.Who]() {
@@ -178,7 +185,7 @@ class Controls extends React.Component {
           player !== this.props.name ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{player}</button> : null
         )
       </div>
-    )
+    );
   }
 
   [Phase.BusinessCenter.Theirs]() {
@@ -190,7 +197,7 @@ class Controls extends React.Component {
           card ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
         )}
       </div>
-    )
+    );
   }
 
   [Phase.BusinessCenter.Yours]() {
@@ -202,7 +209,7 @@ class Controls extends React.Component {
           card ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
         )}
       </div>
-    )
+    );
   }
 
   [Phase.Buy]() {
@@ -217,7 +224,7 @@ class Controls extends React.Component {
           this.props.money >= card.cost && !this.props.goals[i] ? <button key={`lmk-${card.id}`} onClick={() => this.state.resolve(card)}>{card.name}</button> : null
         )}
       </div>
-    )
+    );
   }
 
   [Phase.AmusementPark]() {
@@ -225,7 +232,7 @@ class Controls extends React.Component {
       <div>
         You rolled doubles! <button onClick={() => this.state.resolve()}>Go again!</button>
       </div>
-    )
+    );
   }
 }
 

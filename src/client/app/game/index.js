@@ -65,11 +65,15 @@ class Game extends React.Component {
   render() {
     return (
       <div className="game">
-        <Board />
+        <div className="game__board">
+          <Board />
+        </div>
         <div className="game__players">
           { this.props.players.map((name, i) => <Player name={name} key={`${i}`} index={(i - this.props.pid + this.props.players.length) % this.props.players.length + 1} id={`player-${i}`} />) }
         </div>
-        { _if(this.props.turn === this.props.pid) (<Controls />)}
+        <div className="game__controls">
+          { _if(this.props.turn === this.props.pid) (<Controls />) }
+        </div>
       </div>
     );
   }

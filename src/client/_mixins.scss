@@ -1,0 +1,52 @@
+@import 'variables';
+
+@mixin card-backing {
+  background-color: white;
+  padding: 4px;
+  margin: 4px;
+  border-radius: 8px;
+  &--depth-0 { opacity: 0.5; }
+  @for $i from 1 through 8 {
+    &--depth-#{$i} {
+      $cardSideColor: white;
+      $shadows: 0 2px 0 0 darken($cardSideColor, 5), 0 2px 0 1px darken($cardSideColor, 15);
+      @for $n from 2 through $i {
+        $shadows: $shadows + ', 0 #{2 * $n}px 0 0 #{darken($cardSideColor, 5)}, 0 #{2 * $n}px 0 1px #{darken($cardSideColor, 10)}'
+      }
+      box-shadow: #{$shadows};
+      transform: translateY(-2px * $i);
+    }
+  }
+}
+
+@mixin coin {
+  &--depth-0 { display: none; }
+  @for $i from 1 through 5 {
+    &--depth-#{$i} {
+      $coinSideColor: rgb(226, 212, 178);
+      $shadows: 0 3px 0 0 darken($coinSideColor, 5), 0 3px 0 1px darken($coinSideColor, 15);
+      @for $n from 2 through $i {
+        $shadows: $shadows + ', 0 #{3 * $n}px 0 0 #{darken($coinSideColor, 5)}, 0 #{3 * $n}px 0 1px #{darken($coinSideColor, 15)}'
+      }
+      box-shadow: #{$shadows};
+      transform: translateY(-3px * $i);
+      background-size: cover;
+      border-radius: 100%;
+    }
+  }
+}
+
+@mixin triangle($w, $h, $color: white) {
+  box-sizing: border-box;
+  width: $w;
+  height: $h;
+  overflow: visible;
+  position: absolute;
+  top: 0;
+  right: -$w;
+  border-top: ($h / 2) solid transparent;
+  border-bottom: ($h / 2) solid transparent;
+  border-right: solid transparent;
+  border-left: solid $color;
+  border-left-width: $w;
+}

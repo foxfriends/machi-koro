@@ -42,7 +42,6 @@ class Player extends React.Component {
 
   constructor(props) {
     super(props);
-    console.table(props);
   }
 
   render() {
@@ -52,8 +51,8 @@ class Player extends React.Component {
         <div className="player__coins">{asCoins(this.props.money)}</div>
         <div className="player__cards">
           { this.props.cards.map((quantity, i) =>
-            <div className={`player__card-backing player__card-backing--small player__card-backing--depth-${quantity}`}>
-              <div className={`player__card player__card--${cards[i].name.toLowerCase().replace(/\W/g, '-')} player__card--small`} key={i}>
+            <div className={`player__card-backing player__card-backing--small player__card-backing--depth-${quantity}`} key={i}>
+              <div className={`player__card player__card--${cards[i].name.toLowerCase().replace(/\W/g, '-')} player__card--small`}>
                 { quantity }
               </div>
             </div>
