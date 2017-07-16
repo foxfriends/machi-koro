@@ -175,9 +175,11 @@ class Controls extends React.Component {
     return (
       <div>
         Take 5 coins from...
-        this.props.players.map((player, i) =>
-          player !== this.props.name ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{player}</button> : null
-        )
+        {this.props.players.map((player, i) =>
+          player !== this.props.name
+            ? <button key={i} onClick={() => this.state.resolve(i)}>{player}</button>
+            : null
+        )}
       </div>
     );
   }
@@ -186,9 +188,11 @@ class Controls extends React.Component {
     return (
       <div>
         Swap establishments with...
-        this.props.players.map((player, i) =>
-          player !== this.props.name ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{player}</button> : null
-        )
+        {this.props.players.map((player, i) =>
+          player !== this.props.name
+            ? <button key={i}} onClick={() => this.state.resolve(i)}>{player}</button>
+            : null
+        )}
       </div>
     );
   }
@@ -199,7 +203,7 @@ class Controls extends React.Component {
         Take which card...
         <button onClick={() => this.state.resolve(-1)}>Start over</button>
         {this.props.cards[this.state.who].map((card, i) =>
-          card ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
+          card ? <button key={i} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
         )}
       </div>
     );
@@ -211,7 +215,7 @@ class Controls extends React.Component {
         Give which card...
         <button onClick={() => this.state.resolve(-1)}>Start over</button>
         {this.props.cards[this.props.turn].map((card, i) =>
-          card ? <button key={`${i}`} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
+          card ? <button key={i} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
         )}
       </div>
     );
