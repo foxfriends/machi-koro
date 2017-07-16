@@ -6,7 +6,7 @@ export function Join({ gameName, userName }) {
   return {
     type: (state, { gameName, userName }) => {
       const id = state.games[gameName].players.indexOf(userName);
-      if(id === -1) { return state; }
+      if(id === -1 || state.games[gameName].ready[id]) { return state; }
       return {
         ...state,
         games: {
