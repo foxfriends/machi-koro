@@ -4,8 +4,8 @@
 
 .player {
   position: absolute;
-  width: ($cardSize / 2 + 16px) * 4;
-
+  padding: 16px;
+  background-color: transparentize(white, 0.2);
   @for $i from 1 through 4 {
     &--#{$i} {
       transform-origin: bottom left;
@@ -31,10 +31,15 @@
 
   &__goals, &__coins, &__cards {
     display: flex;
+    align-items: baseline;
+  }
+  &__name {
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
   }
   &__coin {
     @include coin;
-
     @each $i in 1 5 10 {
       &--value-#{$i} {
         width: map-get($coinSize, $i);
