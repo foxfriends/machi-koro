@@ -1,2 +1,82 @@
-$skyblue: #01addd;
 $iconFont: 'Material Icons';
+$skyblue: #01addd;
+$cardSize: 165px;
+$dieSize: 40px;
+$cards:
+  apple-orchard
+  bakery
+  business-center
+  cafe
+  cheese-factory
+  convenience-store
+  family-restaurant
+  forest
+  fruit-and-vegetable-market
+  furniture-factory
+  mine
+  ranch
+  stadium
+  tv-station
+  wheat-field;
+$landmarks:
+  amusement-park
+  amusement-park-back
+  radio-tower
+  radio-tower-back
+  shopping-mall
+  shopping-mall-back
+  train-station
+  train-station-back;
+$coinSize: (
+  1: 40px,
+  5: 60px,
+  10: 80px
+);
+
+@mixin card-backing {
+  background-color: white;
+  padding: 4px;
+  margin: 4px;
+  border-radius: 8px;
+  &--depth-0 { opacity: 0.5; }
+  @for $i from 1 through 8 {
+    &--depth-#{$i} {
+      $cardSideColor: white;
+      $shadows: 0 2px 0 0 darken($cardSideColor, 5), 0 2px 0 1px darken($cardSideColor, 15);
+      @for $n from 2 through $i {
+        $shadows: $shadows + ', 0 #{2 * $n}px 0 0 #{darken($cardSideColor, 5)}, 0 #{2 * $n}px 0 1px #{darken($cardSideColor, 10)}'
+      }
+      box-shadow: #{$shadows};
+      transform: translateY(-2px * $i);
+    }
+  }
+}
+
+%card {
+  background-size: cover;
+  width: $cardSize;
+  height: $cardSize / 0.66;
+}
+
+%landmark {
+  background-size: cover;
+  width: $cardSize / 2;
+  height: $cardSize / 0.66 / 2;
+}
+
+@mixin coin {
+  &--depth-0 { display: none; }
+  @for $i from 1 through 5 {
+    &--depth-#{$i} {
+      $coinSideColor: rgb(226, 212, 178);
+      $shadows: 0 3px 0 0 darken($coinSideColor, 5), 0 3px 0 1px darken($coinSideColor, 15);
+      @for $n from 2 through $i {
+        $shadows: $shadows + ', 0 #{3 * $n}px 0 0 #{darken($coinSideColor, 5)}, 0 #{3 * $n}px 0 1px #{darken($coinSideColor, 15)}'
+      }
+      box-shadow: #{$shadows};
+      transform: translateY(-3px * $i);
+      background-size: cover;
+      border-radius: 100%;
+    }
+  }
+}

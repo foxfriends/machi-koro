@@ -1,0 +1,68 @@
+@import '../../variables';
+.player {
+  position: absolute;
+  width: ($cardSize / 2 + 16px) * 4;
+
+  @for $i from 1 through 4 {
+    &--#{$i} {
+      transform-origin: bottom left;
+      transform: rotate(#{($i - 1) * -90deg});
+    }
+  }
+  &--1 {
+    left: 0;
+    bottom: 0;
+  }
+  &--2 {
+    left: 100%;
+    bottom: 0;
+  }
+  &--3 {
+    left: 100%;
+    bottom: 100%;
+  }
+  &--4 {
+    left: 0;
+    bottom: 100%;
+  }
+
+  &__goals, &__coins, &__cards {
+    display: flex;
+  }
+  &__coin {
+    @include coin;
+
+    @each $i in 1 5 10 {
+      &--value-#{$i} {
+        width: map-get($coinSize, $i);
+        height: map-get($coinSize, $i);
+        background-image: url('../../../images/coin-#{$i}.png');
+      }
+    }
+  }
+  &__card-backing {
+    @include card-backing;
+    &--small {
+      margin: 1px;
+      padding: 1px;
+      border-radius: 1px;
+    }
+  }
+  &__card {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    @each $card in join($cards, $landmarks) {
+      &--#{$card} {
+        @extend %landmark;
+        background-image: url('../../../images/card-#{$card}.png');
+      }
+    }
+    &--small {
+      width: $cardSize / 2 / 3;
+      height: $cardSize / 0.66 / 2 / 3;
+    }
+  }
+}

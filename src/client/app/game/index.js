@@ -9,6 +9,7 @@ import Player from './player';
 import Controls from './controls';
 
 import * as Action from '../../store';
+import './index.scss';
 
 @socketConnect
 @reduxConnect(
@@ -65,7 +66,9 @@ class Game extends React.Component {
     return (
       <div className="game">
         <Board />
-        { this.props.players.map((name, i) => <Player name={name} key={`${i}`} index={i} id={`player-${i}`} />) }
+        <div className="game__players">
+          { this.props.players.map((name, i) => <Player name={name} key={`${i}`} index={(i - this.props.pid + this.props.players.length) % this.props.players.length + 1} id={`player-${i}`} />) }
+        </div>
         { _if(this.props.turn === this.props.pid) (<Controls />)}
       </div>
     );
