@@ -1,4 +1,5 @@
 @import '../../base';
+@import '../../variables';
 .setup {
   display: flex;
   flex-direction: column;
@@ -28,7 +29,7 @@
   }
   &__ready {
     font-size: 48px;
-    font-family: 'Icons';
+    font-family: $iconFont;
   }
   &__actions {
     display: flex;
