@@ -28,7 +28,8 @@ class Board extends React.Component {
           { [...cards].map(({name, id}) =>
             <div className={`board__card-backing board__card-backing--depth-${this.props.cards[id]}`} key={id}>
               <div className={`board__card board__card--${name.toLowerCase().replace(/\W/g, '-')}`} />
-            </div>) }
+            </div>)
+          }
         </div>
         <div className="board__info" />
       </div>

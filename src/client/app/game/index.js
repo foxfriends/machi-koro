@@ -69,7 +69,9 @@ class Game extends React.Component {
           <Board />
         </div>
         <div className="game__players">
-          { this.props.players.map((name, i) => <Player name={name} key={`${i}`} index={(i - this.props.pid + this.props.players.length) % this.props.players.length + 1} id={`player-${i}`} />) }
+          { this.props.players.map((name, i) =>
+            <Player name={name} key={`${i}`} pid={i} index={(i - this.props.pid + this.props.players.length) % this.props.players.length + 1} id={`player-${i}`} />)
+          }
         </div>
         <div className="game__controls">
           { _if(this.props.turn === this.props.pid) (<Controls />) }

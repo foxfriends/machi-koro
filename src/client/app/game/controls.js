@@ -140,11 +140,14 @@ class Controls extends React.Component {
 
   [Phase.Dice]() {
     return (
-      <div>
-        <button onClick={() => this.state.resolve(1)}>Roll 1 die</button>
-        {_if (this.props.goals[Landmark.TrainStation.id]) (
-          <button onClick={() => this.state.resolve(2)}>Roll 2 dice</button>
-        )}
+      <div className="dice-phase">
+        <div className="dice-phase__container">
+          <p className="dice-phase__label">Roll how many?</p>
+          <button className="dice-phase__button" onClick={() => this.state.resolve(1)}>1</button>
+          {_if (this.props.goals[Landmark.TrainStation.id]) (
+            <button className="dice-phase__button" onClick={() => this.state.resolve(2)}>2</button>
+          )}
+        </div>
       </div>
     );
   }

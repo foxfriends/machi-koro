@@ -29,7 +29,7 @@ function asCoins(money) {
 }
 
 @reduxConnect(
-  ({data : { cards, money, goals }}, {name, index}) => ({ cards : cards[index], money: money[index], goals: goals[index], name, index })
+  ({data : { cards, money, goals }}, {name, pid, index}) => ({ cards : cards[pid], money: money[pid], goals: goals[pid], name, index })
 )
 class Player extends React.Component {
   props : {

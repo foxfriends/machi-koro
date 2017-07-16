@@ -2,3 +2,8 @@
   from { transform: translateX(-100%); }
   to   { transform: translateX(0); }
 }
+
+@keyframes roll-in {
+  from { transform: translateX(-100vw) rotate(0); }
+  to   { transform: translateX(0) rotate(#{5 * 360deg}); }
+}
