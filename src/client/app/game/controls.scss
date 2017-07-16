@@ -69,10 +69,85 @@
     background-color: $skyblue;
     color: white;
     font-size: 24px;
+    margin: 8px;
     transition: background-color 0.1s;
     cursor: pointer;
     &:hover {
       background-color: darken($skyblue, 3);
     }
+  }
+}
+
+.buy-phase {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  &__label {
+    width: 100%;
+    text-align: center;
+    margin-top: 16px;
+    font-size: 24px;
+  }
+  &__cards-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: ($cardSize + 16px) * 5;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  &__cards {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 12px;
+  }
+  &__button--end-turn {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    border: none;
+    width: 400px;
+    height: 40px;
+    background-color: transparentize(white, 0.7);
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: transparentize(white, 0.5);
+    }
+  }
+  &__card-button {
+    @extend %card;
+    margin: 8px;
+    background: transparent;
+    border: none;
+    &:not([disabled]) {
+      cursor: pointer;
+      background-color: transparentize(white, 0.7);
+      transition: background-color 0.2s;
+      &:hover {
+        background-color: transparentize(white, 0.5);
+      }
+    }
+  }
+  &__goals-container {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 16px;
+  }
+  &__goal-button {
+    @extend .buy-phase__card-button;
+    width: $cardSize / 2;
+    height: $cardSize / 2 / 0.66;
+    margin: 8px;
   }
 }

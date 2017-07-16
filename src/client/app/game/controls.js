@@ -143,9 +143,9 @@ class Controls extends React.Component {
       <div className="dice-phase">
         <div className="dice-phase__container">
           <p className="dice-phase__label">Roll how many?</p>
-          <button className="dice-phase__button" onClick={() => this.state.resolve(1)}>1</button>
+          <button className="dice-phase__button" key={1} onClick={() => this.state.resolve(1)}>1</button>
           {_if (this.props.goals[Landmark.TrainStation.id]) (
-            <button className="dice-phase__button" onClick={() => this.state.resolve(2)}>2</button>
+            <button className="dice-phase__button" key={2} onClick={() => this.state.resolve(2)}>2</button>
           )}
         </div>
       </div>
@@ -154,13 +154,15 @@ class Controls extends React.Component {
 
   [Phase.RadioTower]() {
     return (
-      <div>
-        Use radio tower to reroll?
-        <button onClick={() => this.state.resolve(0)}>Keep your roll</button>
-        <button onClick={() => this.state.resolve(1)}>Roll 1 die</button>
-        {_if (this.props.goals[Landmark.TrainStation.id]) (
-          <button onClick={() => this.state.resolve(2)}>Roll 2 dice</button>
-        )}
+      <div className="dice-phase">
+        <div className="dice-phase__container">
+          <p className="dice-phase__label">Use radio tower to reroll?</p>
+          <button className="dice-phase__button" key={0} onClick={() => this.state.resolve(0)}>No</button>
+          <button className="dice-phase__button" key={1} onClick={() => this.state.resolve(1)}>1</button>
+          {_if (this.props.goals[Landmark.TrainStation.id]) (
+            <button className="dice-phase__button" key={2} onClick={() => this.state.resolve(2)}>2</button>
+          )}
+        </div>
       </div>
     );
   }
@@ -217,23 +219,39 @@ class Controls extends React.Component {
 
   [Phase.Buy]() {
     return (
-      <div>
-        Buy?
-        <button onClick={() => this.state.resolve(null)}>End turn</button>
-        {[...Card].map((card) =>
-          this.props.money >= card.cost ? <button key={`est-${card.id}`} onClick={() => this.state.resolve(card)}>{card.name}</button> : null
-        )}
-        {[...Landmark].map((card, i) =>
-          this.props.money >= card.cost && !this.props.goals[i] ? <button key={`lmk-${card.id}`} onClick={() => this.state.resolve(card)}>{card.name}</button> : null
-        )}
+      <div className="buy-phase">
+        <div className="buy-phase__label">Buy?</div>
+        <div className="buy-phase__cards-container">
+          <div className="buy-phase__cards">
+            {[...Card].map((card) =>
+              <button
+                className="buy-phase__card-button"
+                key={`est-${card.id}`}
+                onClick={() => this.state.resolve(card)}
+                disabled={this.props.money < card.cost || (card.color === Color.Purple && this.props.cards[this.props.turn][card.id])} />
+            )}
+          </div>
+        </div>
+        <div className="buy-phase__goals-container">
+          {[...Landmark].map((card, i) =>
+            <button
+              className={`buy-phase__goal-button`}
+              key={`lmk-${card.id}`}
+              onClick={() => this.state.resolve(card)}
+              disabled={this.props.money < card.cost || this.props.goals[i]} />
+          )}
+        </div>
+        <button className="buy-phase__button--end-turn" onClick={() => this.state.resolve(null)}>End turn</button>
       </div>
     );
   }
 
   [Phase.AmusementPark]() {
     return (
-      <div>
-        You rolled doubles! <button onClick={() => this.state.resolve()}>Go again!</button>
+      <div className="start-phase">
+        <div className="start-phase__container">
+          <button className="start-phase__button" onClick={() => this.state.resolve()}>You rolled doubles! Go again!</button>
+        </div>
       </div>
     );
   }
