@@ -53,6 +53,11 @@
   }
   &__card {
     color: white;
+    text-shadow:
+     -1px -1px 0 black,
+      1px -1px 0 black,
+      -1px 1px 0 black,
+       1px 1px 0 black;
     display: flex;
     align-items: center;
     justify-content: center;
