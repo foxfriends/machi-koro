@@ -101,9 +101,10 @@ io.on('connection', (socket) => {
     respond();
   })
 
-  socket.on('tv-station', ({ who }) => {
+  socket.on('tv-station', ({ who }, respond) => {
     store.dispatch(Action.Game.TVStation({ game, you: id(), them: who }))
     io.to(game).emit('tv-station', { you: id(), them: who });
+    respond();
   });
 
   socket.on('business-center', ({ who, yours, theirs }, respond) => {
@@ -136,6 +137,10 @@ io.on('connection', (socket) => {
   socket.on('end-turn', () => {
     store.dispatch(Action.Game.EndTurn({ game }));
     io.to(game).emit('end-turn', { turn: store.getState().games[game].turn });
+  });
+
+  socket.on('game-over', () => {
+    io.to(game).emit('game-over', { winner: id() });
   });
 
   socket.on('disconnect', () => {

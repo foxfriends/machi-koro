@@ -4,7 +4,7 @@ import { socketConnect } from 'socket.io-react';
 import { connect as reduxConnect } from 'react-redux';
 import Deferred from 'promise-defer';
 
-import { _if } from '../../helper';
+import { _if, calcIndex } from '../../helper';
 import Landmark from '../../../landmarks';
 import { Card, Color, Purchase } from '../../../cards';
 import './controls.scss';
@@ -26,7 +26,7 @@ const Phase = {
 
 @socketConnect
 @reduxConnect(
-  ({ name, data: { turn, goals, money, players, cards } }) => ({ name, goals: goals[turn], money: money[turn], players, cards, turn })
+  ({ name, data: { cardsLeft, turn, goals, money, players, cards } }) => ({ cardsLeft, name, goals: goals[turn], money: money[turn], players, cards, turn })
 )
 class Controls extends React.Component {
   props : {
@@ -89,7 +89,7 @@ class Controls extends React.Component {
               this.setState({ phase: Phase.BusinessCenter.Yours });
               yours = await this.input;
               if(yours === -1) { continue; }
-            } while(false);
+            } while(yours === -1 || theirs === -1);
             await this.props.socket.emit('business-center', { who, theirs, yours });
           }
           break;
@@ -106,6 +106,10 @@ class Controls extends React.Component {
           }
         } else if(purchase.type === Purchase.Landmark) {
           if(await this.props.socket.emit('buy-landmark', { landmark: purchase.id })) {
+            if(this.props.goals.every(bought => bought)) {
+              this.props.socket.emit('game-over');
+              return;
+            }
           } else {
             console.log("You can't afford it");
           }
@@ -173,11 +177,11 @@ class Controls extends React.Component {
 
   [Phase.TVStation]() {
     return (
-      <div>
-        Take 5 coins from...
+      <div className="choose-player">
+        <div className="choose-player__label">Take 5 coins from...</div>
         {this.props.players.map((player, i) =>
           player !== this.props.name
-            ? <button key={i} onClick={() => this.state.resolve(i)}>{player}</button>
+            ? <button className={`choose-player__button choose-player__button--${calcIndex(i, this.props.turn, this.props.players.length)}`} key={i} onClick={() => this.state.resolve(i)} />
             : null
         )}
       </div>
@@ -186,11 +190,11 @@ class Controls extends React.Component {
 
   [Phase.BusinessCenter.Who]() {
     return (
-      <div>
-        Swap establishments with...
+      <div className="choose-player">
+        <div className="choose-player__label">Swap establishments with...</div>
         {this.props.players.map((player, i) =>
           player !== this.props.name
-            ? <button key={i}} onClick={() => this.state.resolve(i)}>{player}</button>
+            ? <button className={`choose-player__button choose-player__button--${calcIndex(i, this.props.turn, this.props.players.length)}`} key={i} onClick={() => this.state.resolve(i)} />
             : null
         )}
       </div>
@@ -199,24 +203,40 @@ class Controls extends React.Component {
 
   [Phase.BusinessCenter.Theirs]() {
     return (
-      <div>
-        Take which card...
-        <button onClick={() => this.state.resolve(-1)}>Start over</button>
-        {this.props.cards[this.state.who].map((card, i) =>
-          card ? <button key={i} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
-        )}
+      <div className="buy-phase">
+        <div className="buy-phase__label">Take which card...</div>
+        <div className="buy-phase__cards-container">
+          <div className="buy-phase__cards">
+            {[...Card].map((card, i) =>
+              <button
+                className="buy-phase__card-button"
+                key={`est-${i}`}
+                onClick={() => this.state.resolve(i)}
+                disabled={!this.props.cards[this.state.who][i] || card.color === Color.Purple} />
+            )}
+          </div>
+        </div>
+        <button className="buy-phase__button--bottom" onClick={() => this.state.resolve(-1)}>Start over</button>
       </div>
     );
   }
 
   [Phase.BusinessCenter.Yours]() {
     return (
-      <div>
-        Give which card...
-        <button onClick={() => this.state.resolve(-1)}>Start over</button>
-        {this.props.cards[this.props.turn].map((card, i) =>
-          card ? <button key={i} onClick={() => this.state.resolve(i)}>{Card[i].name}</button> : null
-        )}
+      <div className="buy-phase">
+        <div className="buy-phase__label">Give which card...</div>
+        <div className="buy-phase__cards-container">
+          <div className="buy-phase__cards">
+            {[...Card].map((card, i) =>
+              <button
+                className="buy-phase__card-button"
+                key={`est-${i}`}
+                onClick={() => this.state.resolve(i)}
+                disabled={!this.props.cards[this.props.turn][i] || card.color === Color.Purple} />
+            )}
+          </div>
+        </div>
+        <button className="buy-phase__button--bottom" onClick={() => this.state.resolve(-1)}>Start over</button>
       </div>
     );
   }
@@ -232,7 +252,7 @@ class Controls extends React.Component {
                 className="buy-phase__card-button"
                 key={`est-${card.id}`}
                 onClick={() => this.state.resolve(card)}
-                disabled={this.props.money < card.cost || (card.color === Color.Purple && this.props.cards[this.props.turn][card.id])} />
+                disabled={!this.props.cardsLeft[card.id] || this.props.money < card.cost || (card.color === Color.Purple && this.props.cards[this.props.turn][card.id])} />
             )}
           </div>
         </div>
@@ -245,7 +265,7 @@ class Controls extends React.Component {
               disabled={this.props.money < card.cost || this.props.goals[i]} />
           )}
         </div>
-        <button className="buy-phase__button--end-turn" onClick={() => this.state.resolve(null)}>End turn</button>
+        <button className="buy-phase__button--bottom" onClick={() => this.state.resolve(null)}>End turn</button>
       </div>
     );
   }

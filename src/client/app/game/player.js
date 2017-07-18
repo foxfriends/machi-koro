@@ -22,14 +22,14 @@ function asCoins(money) {
   }
 
   return [
-    <div className={`player__coin--value-10 player__coin--depth-${coins[10]}`} key="10" />,
-    <div className={`player__coin--value-5 player__coin--depth-${coins[5]}`} key="5" />,
-    <div className={`player__coin--value-1 player__coin--depth-${coins[1]}`} key="1" />,
+    <div className={`player__coin player__coin--value-10 player__coin--depth-${coins[10]}`} key="10" />,
+    <div className={`player__coin player__coin--value-5 player__coin--depth-${coins[5]}`} key="5" />,
+    <div className={`player__coin player__coin--value-1 player__coin--depth-${coins[1]}`} key="1" />,
   ]
 }
 
 @reduxConnect(
-  ({data : { cards, money, goals }}, {name, pid, index}) => ({ cards : cards[pid], money: money[pid], goals: goals[pid], name, index })
+  ({data : { cards, money, goals }}, { name, pid, index }) => ({ cards : cards[pid], money: money[pid], goals: goals[pid], name, index })
 )
 class Player extends React.Component {
   props : {

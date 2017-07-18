@@ -2,6 +2,7 @@
 
 import { Card, Color } from '../../cards';
 import Landmark from '../../landmarks';
+import { Phase } from './';
 
 export function Dice({ dice }) {
   return {
@@ -77,7 +78,7 @@ export function ActivateCard({ id, card }) {
       };
     case Color.Purple:
       return { type: state => state };
-  }
+  };
 }
 
 export function Stadium({ id }) {
@@ -112,12 +113,14 @@ export function TVStation({ you, them }) {
       };
     },
     you, them
-  }
+  };
 }
 
 export function BusinessCenter({ you, yours, them, theirs }) {
   return {
     type: (state, { you, them, yours, theirs }) => {
+      yours = Card[yours];
+      theirs = Card[theirs];
       if(theirs.color === Color.Purple || yours.color === Color.Purple) { return state; }
       if(state.data.cards[you][yours.id] === 0 || state.data.cards[them][theirs.id] === 0) { return state; }
       if(yours.id === theirs.id) { return {...state}; } // this is a valid action, but does not change anything
@@ -135,7 +138,7 @@ export function BusinessCenter({ you, yours, them, theirs }) {
       };
     },
     you, them, yours, theirs
-  }
+  };
 }
 
 
@@ -181,7 +184,7 @@ export function Construct({ id, landmark }) {
       }
     },
     id, landmark
-  }
+  };
 }
 
 export function EndTurn({ turn }) {
@@ -194,5 +197,19 @@ export function EndTurn({ turn }) {
       }
     }),
     turn
+  };
+}
+
+export function EndGame({ winner }) {
+  return {
+    type: (state, { winner }) => ({
+      ...state,
+      phase: Phase.Done,
+      data: {
+        ...state.data,
+        turn: winner,
+      },
+    }),
+    winner
   };
 }

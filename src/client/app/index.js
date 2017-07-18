@@ -16,6 +16,7 @@ class MachiKoro extends React.Component {
       case Phase.Setup:
         return <Setup />;
       case Phase.Game:
+      case Phase.Done:
         return <Game />;
     }
   }

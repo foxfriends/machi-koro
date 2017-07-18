@@ -6,6 +6,7 @@ export const Phase = {
   Menu: Symbol('Phase.Menu'),
   Setup: Symbol('Phase.Setup'),
   Game: Symbol('Phase.Game'),
+  Done: Symbol('Phase.Done'),
 };
 
 const initial = {
@@ -13,7 +14,7 @@ const initial = {
   id: -1,
   name: '',
   game: '',
-  data: null
+  data: null,
 };
 
 function reducer(state = initial, action) {

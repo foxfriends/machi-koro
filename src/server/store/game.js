@@ -222,6 +222,8 @@ export function TVStation({ game, you, them }) {
 export function BusinessCenter({ game, you, them, yours, theirs }) {
   return {
     type: (state, { game, you, them, yours, theirs }) => {
+      theirs = Card[theirs];
+      yours = Card[yours];
       if(theirs.color === Color.Purple || yours.color === Color.Purple) { return state; }
       if(state.games[game].cards[you][yours.id] === 0 || state.games[game].cards[them][theirs.id] === 0) { return state; }
       if(yours.id === theirs.id) { return {...state}; } // this is a valid action, but does not change anything
