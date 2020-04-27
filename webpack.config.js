@@ -5,6 +5,7 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = [
   {
+    mode: 'development',
     entry: './src/client/index.js',
     output: {
       path: path.resolve('./public_html'),
@@ -23,6 +24,7 @@ module.exports = [
     ],
   },
   {
+    mode: 'development',
     entry: './src/server/index.js',
     output: {
       path: path.resolve('./'),

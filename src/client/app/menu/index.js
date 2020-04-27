@@ -19,7 +19,7 @@ import './index.scss';
 class Menu extends React.Component {
   props : {
     socket : SocketIO,
-    joinGame : (GameData) => _
+    joinGame : (GameData) => null,
   };
 
   state = {

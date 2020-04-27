@@ -7,8 +7,8 @@ import { Card, Color } from '../cards';
 import Landmark from '../landmarks';
 
 const app = express();
-const server = app.listen(8888, () => {
-  console.log('Machi Koro server started on port 8888');
+const server = app.listen(process.env.machi_port || 8888, () => {
+  console.log(`Machi Koro server started on port ${process.env.machi_port || 8888}`);
 });
 
 app.use('/', express.static('public_html'));
