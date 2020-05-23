@@ -15,7 +15,7 @@ module.exports = [
       rules: [
         { test: /\.jsx?$/, exclude: /node_modules.*\.js/, loader: 'babel-loader' },
         { test: /\.s(a|c)ss$/, exclude: /node_modules.*\.js/, loader: 'style-loader!css-loader!postcss-loader!fast-sass-loader' },
-        { test: /\.(gif|svg|png|jpe?g)$/, loader: 'file-loader?name=images/[hash].[ext]!img-loader' }
+        { test: /\.(gif|svg|png|jpe?g)$/, loader: 'file-loader?name=images/[hash].[ext]!img-loader', options: {esModule: false}}
       ]
     },
     plugins: [
