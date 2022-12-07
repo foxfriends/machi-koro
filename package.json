@@ -27,7 +27,7 @@
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "css-loader": "^0.28.7",
-    "express": "^4.16.2",
+    "express": "^4.18.2",
     "fast-sass-loader": "^1.5.0",
     "file-loader": "^6.0.0",
     "img-loader": "^2.0.0",
