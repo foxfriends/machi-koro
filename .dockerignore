@@ -1,0 +1,8 @@
+/.git
+/.github
+/README.md
+/node_modules
+/public_html/*
+!/public_html/index.html
+/server.js
+.env
