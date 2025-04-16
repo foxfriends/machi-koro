@@ -17,4 +17,6 @@ RUN npm ci
 COPY --from=build /build/public_html/ ./public_html/
 COPY --from=build /build/server.js ./
 COPY ./public_html/index.html ./public_html/
+ENV machi_port=3000
+EXPOSE $machi_port
 CMD ["node", "server.js"]
