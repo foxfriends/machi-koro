@@ -12,6 +12,9 @@ const server = app.listen(process.env.machi_port || 8888, () => {
 });
 
 app.use('/', express.static('public_html'));
+app.use('/health', (req, res) => {
+  res.send('Ok');
+});
 
 const io = socket(server);
 

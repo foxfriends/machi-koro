@@ -11,3 +11,6 @@ npm-debug.log*
 ## extra files
 # rulebook is not to be included
 rules.pdf
+
+.terraform
+.terraform.lock.hcl
