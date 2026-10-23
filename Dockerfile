@@ -1,4 +1,4 @@
-FROM node:22.14.0 AS build
+FROM node:22.23.4 AS build
 WORKDIR /build
 COPY ./package.json ./package-lock.json ./
 RUN npm ci
@@ -9,7 +9,7 @@ RUN npm run build
 CMD ["false"]
 
 
-FROM node:22.14.0 AS release
+FROM node:22.23.4 AS release
 WORKDIR /app
 COPY ./package.json ./package-lock.json ./
 ENV NODE_ENV=production
